@@ -1,6 +1,7 @@
-=========================================
-The flask mega-tutorial by miguelgrinberg
-=========================================
+=======================
+The flask mega-tutorial
+=======================
+by miguelgrinberg
 
 Description
 ===========
