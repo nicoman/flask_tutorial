@@ -2,9 +2,10 @@ from flask import render_template
 from app import app
 
 # Route recorators
+
+
 @app.route('/')
 @app.route('/index')
-
 def index():
     user = {'nickname': 'Miguel'}
     posts = [{'author': {'nickname': 'John'},
