@@ -6,7 +6,7 @@ from .forms import LoginForm
 
 
 @app.route('/')
-@app.route('/index') #default only GET
+@app.route('/index')  # default only GET
 def index():
     user = {'nickname': 'Miguel'}
     posts = [{'author': {'nickname': 'John'},
@@ -20,9 +20,13 @@ def index():
                             user=user)
 
 
-@app.route('/login', methods=['GET', 'POST']) # Accepts GET and POST request
+@app.route('/login', methods=['GET', 'POST'])  # Accepts GET and POST request
 def login():
     form = LoginForm()
+    if form.validate_on_submit():  # True when we have data on form
+        flash('Login requested for OpenID="%s", remember_me=%s' %
+            (form.openid.data, str(form.remember_me.data)))
+        return redirect('/index')
     return render_template('login.html',
                             title="Sign In",
                             form=form)
