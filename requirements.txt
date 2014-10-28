@@ -1,11 +1,13 @@
 flask
 flask-wtf
+# Wrapper for sqlalchemy
+flask-sqlalchemy
+# Track database updates
+sqlalchemy-migrate
+# flask-whooshalchemy
 # flask-login
 # flask-openid
 # flask-mail
-# flask-sqlalchemy
-# sqlalchemy-migrate
-# flask-whooshalchemy
 # flask-babel
 # guess_language
 # flipflop
