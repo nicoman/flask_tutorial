@@ -71,3 +71,8 @@ def load_user(id):
 # function each time a request is received
 def before_request():
     g.user = current_user
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
