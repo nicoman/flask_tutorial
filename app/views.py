@@ -1,14 +1,17 @@
-from flask import render_template, flash, redirect
-from app import app
+from flask import render_template, flash, redirect, session, url_for, request, g
+from flask.ext.login import login_user, logout_user, current_user, login_required
+from app import app, db, lm, oid
 from .forms import LoginForm
+from models import User
 
 # Route recorators
 
 
 @app.route('/')
 @app.route('/index')  # default only GET
+@login_required
 def index():
-    user = {'nickname': 'Miguel'}
+    user = g.user
     posts = [{'author': {'nickname': 'John'},
                 'body': 'Beautiful day in La Plata!'},
             {'author': {'nickname': 'Susan'},
@@ -21,13 +24,50 @@ def index():
 
 
 @app.route('/login', methods=['GET', 'POST'])  # Accepts GET and POST request
+@oid.loginhandler  # Tells Flask-OpenId that this is out login view function
 def login():
+    if g.user is not None and g.user.is_authenticated():
+        return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():  # True when we have data on form
-        flash('Login requested for OpenID="%s", remember_me=%s' %
-            (form.openid.data, str(form.remember_me.data)))
-        return redirect('/index')
+        session['remember_me'] = form.remember_me.data
+        return oid.try_login(form.openid.data, ask_for=['nickname', 'email'])
     return render_template('login.html',
                             title="Sign In",
                             form=form,
                             providers=app.config['OPENID_PROVIDERS'])
+
+
+@oid.after_login
+def after_login(resp):  # returned by OpenId provider
+    if resp.email is None or resp.email == "":
+        flash('Invalid login. Please try again.')
+        return redirect(url_for('login'))
+    # Check if user alredy exist in the db
+    user = User.query.filter_by(email=resp.email).first()
+    if user is None:
+        nickname = resp.nickname
+        if nickname is None or nickname == "":
+            nickname = resp.email.split('@')[0]
+        user = User(nickname=nickname, email=resp.email)
+        db.session.add(user)
+        db.session.commit()
+    remember_me = False
+    if 'remember_me' in session:
+        remember_me = session['remember_me']
+        session.pop('remember_me', None)
+    login_user(user, remember=remember_me)
+    return redirect(request.args.get('next') or url_for('index'))
+
+
+@lm.user_loader
+# Function registered with Flask-Login through decorator
+def load_user(id):
+    return User.query.get(int(id))  # Users Id in Flask-Login are always Unicod
+
+
+@app.before_request
+# Any function that are decorated with before_request will run before the view
+# function each time a request is received
+def before_request():
+    g.user = current_user

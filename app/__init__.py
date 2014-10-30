@@ -16,7 +16,9 @@ app.config.from_object('config')
 db = SQLAlchemy(app)
 
 lm = LoginManager()
-lm.init.app(app)
+lm.init_app(app)
+# Flask-Login needs to know what view logs users in
+lm.login_view = 'login'
 # Need a path tmp
 oid = OpenID(app, os.path.join(basedir, 'tmp'))
 
