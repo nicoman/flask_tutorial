@@ -1,4 +1,5 @@
 from app import db
+from hashlib import md5
 
 
 class User(db.Model):
@@ -26,6 +27,15 @@ class User(db.Model):
             return unicode(self.id)  # python 2
         except NameError:
             return str(self.id)  # python3
+
+    def avatar(self, size):
+        """
+        Rely on the gravatar service
+        Doc: https://gravatar.com/site/implement/images
+        """
+        return 'http://www.gravatar.com/avatar/%s?d=mm&s=%d' % (
+            md5(self.email.encode('utf-8')).hexdigest(),
+            size)
 
     def __repr__(self):
         return '<User %r>' % (self.nickname)
