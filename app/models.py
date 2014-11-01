@@ -8,6 +8,8 @@ class User(db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     # Not a database field (one to many, relationship in one)
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    about_me = db.Column(db.String(140))
+    last_seen = db.Column(db.DateTime)
 
     """
     Methods expected by Flask-Login
