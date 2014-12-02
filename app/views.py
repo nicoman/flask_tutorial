@@ -4,14 +4,16 @@ from app import app, db, lm, oid
 from .forms import LoginForm, EditForm, PostForm
 from models import User, Post
 from datetime import datetime
+from config import POSTS_PER_PAGE
 
 # Route recorators
 
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
+@app.route('/index/<int:page>', methods=['GET', 'POST'])
 @login_required
-def index():
+def index(page=1):
     form = PostForm()
     if form.validate_on_submit():
         post = Post(body=form.post.data, timestamp=datetime.utcnow(), author=g.user)
@@ -19,7 +21,7 @@ def index():
         db.session.commit()
         flash('Your post is now live!')
         return redirect(url_for('index'))
-    posts = g.user.followed_posts().all()
+    posts = g.user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
     # rendet_template (jinja2 backend)
     return render_template('index.html',
                             title='Home',
