@@ -95,16 +95,14 @@ def logout():
 
 
 @app.route('/user/<nickname>')  # nickname is the argument to user function
+@app.route('/user/<nickname>/<int:page>', methods=['GET', 'POST'])
 @login_required
-def user(nickname):
+def user(nickname, page=1):
     user = User.query.filter_by(nickname=nickname).first()
     if user == None:
         flash('User %s not found.' % nickname)
         return redirect(url_for('index'))
-    posts = [
-        {'author': user, 'body': 'Test post #1'},
-        {'author': user, 'body': 'Test post #2'}
-        ]
+    posts = user.posts.paginate(page, POSTS_PER_PAGE, False)
     return render_template('user.html',
                             user=user,
                             posts=posts)
