@@ -8,9 +8,10 @@ sqlalchemy-migrate
 flask-login
 # Provide authentication
 flask-openid
+# Another DB for text search
+flask-whooshalchemy
 # flask-mail
 # flask-babel
 # guess_language
 # flipflop
 # coverage
-# flask-whooshalchemy
