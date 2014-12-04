@@ -29,3 +29,6 @@ ADMINS = ['you@example.com']
 
 # pagination
 POSTS_PER_PAGE = 3
+
+# Search
+MAX_SEARCH_RESULTS = 50
