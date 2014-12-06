@@ -10,7 +10,8 @@ flask-login
 flask-openid
 # Another DB for text search
 flask-whooshalchemy
-# flask-mail
+# Tool to handle email
+flask-mail
 # flask-babel
 # guess_language
 # flipflop

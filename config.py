@@ -19,13 +19,17 @@ OPENID_PROVIDERS = [
     {'name': 'MyOpenID', 'url': 'https://www.myopenid.com'}]
 
 # mail server settings
-MAIL_SERVER = 'localhost'
-MAIL_PORT = 25
-MAIL_USERNAME = None
-MAIL_PASSWORD = None
+MAIL_SERVER = 'smtp.googlemail.com'
+MAIL_PORT = 465
+MAIL_USE_TLS = False
+MAIL_USE_SSL = True
+# Get user name and password from environment variables, in linux environments
+# use export MAIL_USERNAME=your_username and export MAIL_PASSWORD=your_password
+MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
 # administratir list email
-ADMINS = ['you@example.com']
+ADMINS = ['nicolasmanso@gmail.com']
 
 # pagination
 POSTS_PER_PAGE = 3
