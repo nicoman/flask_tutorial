@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from threading import Thred
+from threading import Thread
 
 
 def async(f):
