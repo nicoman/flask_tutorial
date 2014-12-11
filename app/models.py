@@ -1,5 +1,6 @@
 from app import db, app
 from hashlib import md5
+import re
 
 import sys
 # Check if python version is compatible with whoosh (only v2)
@@ -98,6 +99,10 @@ class User(db.Model):
         1- Join, 2- Filter, 3- Order
         """
         return Post.query.join(followers, (followers.c.followed_id == Post.user_id)).filter(followers.c.follower_id == self.id).order_by(Post.timestamp.desc())
+
+    @staticmethod
+    def make_valid_nickname(nickname):
+        return re.sub('[^a-zA-Z0-9_\.]', '', nickname)
 
 
 class Post(db.Model):

@@ -1,3 +1,5 @@
+{% autoescape false %}
 <p><img class="img-circle" src="{{ post.author.avatar(50) }}">
-{{ post.author.nickname }} said {{ momentjs(post.timestamp).fromNow() }}:
+{{ _('%(nickname)s said %(when)s:', nickname = '<a href="%s">%s</a>' % (url_for('user', nickname=post.author.nickname), post.author.nickname), when=momentjs(post.timestamp).fromNow()) }}
 {{ post.body }}</p>
+{% endautoescape %}

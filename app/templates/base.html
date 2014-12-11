@@ -14,12 +14,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Render time acording browser locales -->
         <script src="/static/js/moment.min.js"></script>
+        {% if g.locale != 'en' %}
+        <script src="/static/js/moment-{{ g.locale }}.min.js"></script>
+        {% endif %}
     </head>
     <body>
         <div class="container">
             <div class="navbar">
                 <div class="navbar-inner">
-                    <a class="brand" href="{{ url_for('index') }}">Home</a>
+                    <a class="brand" href="{{ url_for('index') }}">{{ _('Home') }}</a>
                     <ul class="nav">
                     {% if g.user.is_authenticated() %}
                         <!-- The user function require nickname argument -->

@@ -12,7 +12,8 @@ flask-openid
 flask-whooshalchemy
 # Tool to handle email
 flask-mail
-# flask-babel
+# Multi language support
+flask-babel
 # guess_language
 # flipflop
 # coverage
