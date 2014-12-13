@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, session, url_for, request, g
+from flask import render_template, flash, redirect, session, url_for, request, g, jsonify
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app import app, db, lm, oid, babel
 from .forms import LoginForm, EditForm, PostForm, SearchForm
@@ -8,6 +8,7 @@ from config import POSTS_PER_PAGE, MAX_SEARCH_RESULTS, LANGUAGES
 from emails import follower_notification
 from flask.ext.babel import gettext
 from guess_language import guessLanguage
+from translate import microsoft_translate
 
 
 @babel.localeselector
@@ -215,3 +216,13 @@ def not_found_error(error):
 def internal_error(error):
     db.session.rollback()  # Safe db consistency
     return render_template('500.html'), 500
+
+
+@app.route('/translate', methods=['POST'])
+@login_required
+def translate():
+    return jsonify({
+        'text': microsoft_translate(
+            request.form['text'],
+            request.form['sourceLang'],
+            request.form['destLang'])})
