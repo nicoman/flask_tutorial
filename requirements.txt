@@ -14,6 +14,7 @@ flask-whooshalchemy
 flask-mail
 # Multi language support
 flask-babel
-# guess_language
+# Identify language
+guess_language
 # flipflop
 # coverage
