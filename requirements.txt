@@ -16,5 +16,6 @@ flask-mail
 flask-babel
 # Identify language
 guess_language
+# Add test coverage
+coverage
 # flipflop
-# coverage

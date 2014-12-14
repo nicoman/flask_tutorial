@@ -8,3 +8,6 @@
 </p>
 <p><strong><span id="post{{ post.id }}">{{ post.body }}</span></strong></p>
 {% endautoescape %}
+{% if post.author.id == g.user.id %}
+<div><a href="{{ url_for('delete', id=post.id) }}">{{ _('Delete') }}</a></div>
+{% endif %}

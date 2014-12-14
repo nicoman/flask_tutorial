@@ -47,3 +47,9 @@ LANGUAGES = {
 # microsoft translation service
 MS_TRANSLATOR_CLIENT_ID = ''  # enter your MS translator app id here
 MS_TRANSLATOR_CLIENT_SECRET = ''  # enter your MS translator app secret here
+
+# DB performance
+SQLALCHEMY_RECORD_QUERIES = True
+
+# slow database query threshold (in seconds)
+DATABASE_QUERY_TIMEOUT = 0.5
